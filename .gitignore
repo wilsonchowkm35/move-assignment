@@ -37,7 +37,7 @@ lerna-debug.log*
 .env.*
 !.env.*.sample
 
-.uploads/*
+uploads/*
 installation/config
 
 *.csv
