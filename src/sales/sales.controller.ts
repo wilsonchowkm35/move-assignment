@@ -17,9 +17,14 @@ export class SalesController {
 	}
 
 	@Get('report')
-	async report(@Query('from') fromDate: string, @Query('to') toDate: string): Promise<User[]> {
-		console.log('from', fromDate, 'to', toDate);
-		return this.salesService.find();
+	async report(@Query('from') fromDate: string, @Query('to') endDate: string, @Query('page') page: number, @Query('size') pageSize: number): Promise<User[]> {
+		console.log('from', fromDate, 'to', endDate);
+		return this.salesService.find({
+			fromDate,
+			endDate,
+			page,
+			pageSize
+		});
 	}
 }
 
