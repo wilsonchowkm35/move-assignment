@@ -12,7 +12,6 @@ import { User, UserDocument } from '../schemas/user.schema';
 export class SalesService {
 
 	#bulkSize: number = 100;
-
 	#page: number = 1;
 	#pageSize: number = 20;
 
@@ -77,21 +76,13 @@ export class SalesService {
 		const { fromDate, endDate } = options;
 		const page = isInteger(parseInt(options.page)) ? parseInt(options.page) : this.#page;
 		const pageSize = isInteger(parseInt(options.pageSize)) ? parseInt(options.pageSize) : this.#pageSize;
+		console.log(process.env.TZ);
 		if (!isEmpty(fromDate) && dayjs(fromDate).isValid()) {
-			set(query, { 
-				lastPurchaseDate: { 
-					$gte: dayjs(fromDate).utc().format()
-				}
-			});
+			set(query, 'lastPurchaseDate.$gte', dayjs(fromDate).toISOString());
 		}
 		if (!isEmpty(endDate) && dayjs(endDate).isValid()) {
-			set(query, {
-				lastPurchaseDate: {
-					$lte: dayjs(endDate).utc().format()
-				}
-			});
+			set(query, 'lastPurchaseDate.$lte', dayjs(endDate).toISOString());
 		}
-		console.log(query, page, pageSize, options);
-		return await this.userModel.find(query).limit(pageSize).skip((page - 1) * pageSize).exec();
+		return await this.userModel.find(query).sort([['lastPurchaseDate', -1]]).limit(pageSize).skip((page - 1) * pageSize).exec();
 	}
 }
