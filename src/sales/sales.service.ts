@@ -55,24 +55,16 @@ export class SalesService {
             records.push(json);
           }
           if (records.length >= bulkSize) {
-            const result = await userModel
-              .bulkWrite(parse(records))
-              .catch((error) => error);
+            await userModel.bulkWrite(parse(records)).catch((error) => error);
             records = [];
-            callback(result);
-          } else {
-            callback();
           }
+          callback();
         },
         async destroy(error, callback) {
           if (records.length > 0) {
-            const result = await userModel
-              .bulkWrite(parse(records))
-              .catch((error) => error);
-            callback(result);
-          } else {
-            callback(error);
+            await userModel.bulkWrite(parse(records)).catch((error) => error);
           }
+          callback(error);
         },
       }),
     );

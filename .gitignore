@@ -39,5 +39,6 @@ lerna-debug.log*
 
 uploads/*
 installation/config
+installation/test/config
 
 *.csv
