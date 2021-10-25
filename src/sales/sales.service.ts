@@ -13,6 +13,14 @@ export class SalesService {
   #bulkSize = 100;
   #page = 1;
   #pageSize = 20;
+  #headers = [
+    'name',
+    'age',
+    'height',
+    'gender',
+    'saleAmount',
+    'lastPurchaseDate',
+  ];
 
   constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
 
@@ -38,47 +46,36 @@ export class SalesService {
       autoClose: true,
       encoding: 'utf8',
     });
-    stream
-      .pipe(
-        csv([
-          'name',
-          'age',
-          'height',
-          'gender',
-          'saleAmount',
-          'lastPurchaseDate',
-        ]),
-      )
-      .pipe(
-        new Writable({
-          objectMode: true,
-          async write(json, encoding, callback) {
-            const validModel = new userModel(json);
-            if (!validModel.validateSync()) {
-              records.push(json);
-            }
-            if (records.length >= bulkSize) {
-              const result = await userModel
-                .bulkWrite(parse(records))
-                .catch((error) => error);
-              records = [];
-              callback(result);
-            } else {
-              callback();
-            }
-          },
-          async destroy(error, callback) {
-            if (records.length > 0) {
-              const result = await userModel
-                .bulkWrite(parse(records))
-                .catch((error) => error);
-              callback(result);
-            } else {
-              callback(error);
-            }
-          },
-        }),
-      );
+    stream.pipe(csv(this.#headers)).pipe(
+      new Writable({
+        objectMode: true,
+        async write(json, encoding, callback) {
+          const validModel = new userModel(json);
+          if (!validModel.validateSync()) {
+            records.push(json);
+          }
+          if (records.length >= bulkSize) {
+            const result = await userModel
+              .bulkWrite(parse(records))
+              .catch((error) => error);
+            records = [];
+            callback(result);
+          } else {
+            callback();
+          }
+        },
+        async destroy(error, callback) {
+          if (records.length > 0) {
+            const result = await userModel
+              .bulkWrite(parse(records))
+              .catch((error) => error);
+            callback(result);
+          } else {
+            callback(error);
+          }
+        },
+      }),
+    );
 
     return new Promise<any>(function (resolve, reject) {
       stream

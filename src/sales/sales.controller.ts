@@ -9,7 +9,6 @@ import {
 import { FileInterceptor } from '@nestjs/platform-express';
 import { get } from 'lodash';
 import { SalesService } from './sales.service';
-// import { User } from '../interfaces/user.interface';
 import { User } from '../schemas/user.schema';
 
 @Controller('sales')
