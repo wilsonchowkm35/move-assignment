@@ -9,7 +9,7 @@ import { SalesModule } from '../../sales/sales.module';
 describe('User sales records', () => {
   let app: INestApplication;
   const envFilePath = `.env.${process.env.NODE_ENV || 'development'}`;
-  const testDataFile = path.resolve('./installation/test/data/sales.csv');
+  const testDataFile = path.resolve('./scripts/test/data/sales.csv');
 
   beforeAll(async () => {
     const module = await Test.createTestingModule({
