@@ -39,7 +39,7 @@ lerna-debug.log*
 
 *.bak
 uploads/*
-installation/config
-installation/test/config
+scripts/config
+scripts/test/config
 
 *.csv
