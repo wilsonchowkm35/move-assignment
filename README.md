@@ -7,6 +7,9 @@ API Server built with [Nest](https://github.com/nestjs/nest).
 ## Configuration
 Please copy `.env.production`, `.env.test` and `.env.developement` from `.env.sample` and configure your mongo datbase. Also create build-time configuration with the database user (`USER`) and password (`PASS`) under `./scripts/config` and `./scripts/test/config` from `./scripts/config.sample`
 
+## Prerequisite
+- Mongo and create a database called `move-db` and db user with bulk write and read permission. Or use `install.sh` to create and superuser will be created.
+
 ## Installation
 
 ```bash
