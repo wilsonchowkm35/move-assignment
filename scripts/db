@@ -1,0 +1,26 @@
+#!/bin/sh
+
+createDB() {
+	NAME="${1}"
+	USER="${2}"
+	PASS="${3}"
+	PORT=${4}
+
+	if [ -z "${PASS}" ] || [ -z "${USER}" ] || [ -z "${NAME}" ]; then
+		echo "Missing username, password or insance name!"
+		exit 0
+	fi
+
+	if [ -z "${PORT}" ]; then
+		PORT=27017
+	fi
+
+	docker run -d \
+		--name ${NAME} \
+		-p ${PORT}:27017 \
+		-e MONGO_INITDB_ROOT_USERNAME=${USER} \
+		-e MONGO_INITDB_ROOT_PASSWORD=${PASS} \
+		mongo:latest
+
+}
+
