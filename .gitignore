@@ -35,7 +35,7 @@ lerna-debug.log*
 
 .env
 .env.*
-!.env.*.sample
+!.env.sample
 
 *.bak
 uploads/*
